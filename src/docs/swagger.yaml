@@ -1,0 +1,148 @@
+openapi: "3.0.0"
+info:
+  description: "Single Sing On User Service for ecoBulk Project"
+  version: "1.0.0"
+  title: "ECOBULK SSO API"
+  termsOfService: "https://www.ecobulk.eu/legal/"
+  contact:
+    email: "angel.fernandez.sobrino@upc.edu"
+tags:
+  - name: User Verification
+    description: User verification
+  - name: Users Management
+    description: Operations about users
+servers:
+  - url: https://sso.backend.ecobulk.upc.edu/
+    description: SSO Server
+security:
+  - ApiKeyAuth: []
+paths:
+  /user/verify:
+    get:
+      tags:
+      - "User Verification"
+      summary: "Verify user JWT"
+      description: "Return user data from a user JWT"
+      operationId: "verifyUser"
+      parameters:
+      - name: "clientJWT"
+        in: query
+        schema:
+          type: "string"
+        required: true
+      responses:
+        '200':
+          description: "Request processed"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+              example:
+                success: true
+                info: User found
+                data:
+                  _id: 'cvqnewirjgoiausdgfuho'
+                  first_name: 'firstName'
+                  second_name: 'secondName'
+                  email: 'email@example.com'
+                  role: 'enduser'
+        '404':
+          description: "Not found"
+  /user:
+    get:
+      tags:
+      - "Users Management"
+      summary: "Get users"
+      description: "This can only be done by the logged in user."
+      operationId: "getUsers"
+      responses:
+        '200':
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApiResponse"
+    post:
+      tags:
+      - "Users Management"
+      summary: "Creates list of users with given input array"
+      description: ""
+      operationId: "createUser"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewUser"
+      responses:
+        '200':
+          description: "OK"
+    delete:
+      tags:
+      - "Users Management"
+      summary: "Delete user"
+      description: "Delete user method"
+      operationId: "deleteUser"
+      parameters:
+      - in: header
+        name: "userEmail"
+        description: "The email that needs to be deleted"
+        required: true
+        schema:
+          type: "string"
+      responses:
+        "400":
+          description: "Invalid username supplied"
+        "404":
+          description: "User not found"
+
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: APIkey
+  schemas:
+    User:
+      type: "object"
+      properties:
+        _id:
+          type: "string"
+        first_name:
+          type: "string"
+        second_name:
+          type: "string"
+        email:
+          type: "string"
+        role:
+          type: "string"
+    NewUser:
+      type: object
+      properties:
+        first_name:
+          type: string
+        second_name:
+          type: string
+        email:
+          type: string
+        role:
+          type: string
+        password:
+          type: string
+    ApiResponse:
+      type: object
+      properties:
+        success:
+          type: boolean
+        error:
+          type: number
+        description:
+          type: string
+        data:
+          nullable: true
+          oneOf:
+            - $ref: '#/components/schemas/User'
+            - type: array
+              items:
+                $ref: '#/components/schemas/User'
+                

@@ -1,0 +1,7 @@
+version: "3.9"
+services:
+  eushp-backend: 
+    build: .
+    ports:
+      - "${PORT}:3670"
+    restart: always
