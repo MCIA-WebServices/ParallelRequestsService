@@ -17,14 +17,12 @@ let parallel = {
         let promisesArray = requestsArray.map(async request => {
             let url = parseUrl(request.url, request.queryParams);
             let headers = parseHeaders(request.headers);
-            console.log(request.body);
             let response = await fetch(url,
                 {
                     method: 'POST',
                     headers: headers,
-                    body: request.body
+                    body: JSON.stringify(request.body)
                 });
-            console.log(response);
             return await response.json();
         });
         let resultsArray = await Promise.all(promisesArray);
