@@ -7,8 +7,9 @@ const parallelController = require('controllers/parallel.controller');
 
 const router = express.Router();
 
-router.get('/', asyncHandler(parallelController.get));
+router.post('/get', asyncHandler(parallelController.get));
 
+router.post('/post', asyncHandler(parallelController.post));
 
 
 module.exports = router;

@@ -10,6 +10,9 @@ let parallelController = {
         res.send(apiRes.success('Execution results', await parallelService.get(req.body)));
     },
     
+    post: async (req, res) => {
+        res.send(apiRes.success('Execution results', await parallelService.post(req.body)));
+    }
 };
 
 
