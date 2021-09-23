@@ -1,6 +1,5 @@
 const express = require('express');
 const logger = require('morgan');
-const cookieParser = require('cookie-parser');
 const asyncHandler = require('express-async-handler');
 const helmet = require('helmet');
 
@@ -19,7 +18,6 @@ const app = express();
 app.use(logger(appEnv));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 
 app.use(helmet());
 app.disable('x-powered-by');
