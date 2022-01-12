@@ -22,7 +22,7 @@ jobs:
           proxy-key: ${{ secrets.GATEWAY_PRIVATE_KEY }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
           directory: /home/mcia/services
-          sources: docker-compose.yaml Dockerfile
+          sources: bin src package.json package-lock.json Dockerfile .dockerignore docker-compose.yaml
           tag: latest
           script: |
             docker-compose up --build -d
